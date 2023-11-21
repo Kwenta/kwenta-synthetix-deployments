@@ -96,7 +96,7 @@ But... we are not finished with smart contract tasks yet from Kwenta's perspecti
 
 The following steps needed completing once the smart contracts were deployed:
 1. Get the ABIs from the [cannon registry site](https://usecannon.com/packages). Got to the deployment page - e.g. [like this one](https://usecannon.com/packages/kwenta-synthetix-omnibus-test-3/3.3.3-dev.e141cd8c/84531-main), scroll down and click the download addresses + ABIs button.
-![](2023-11-21-21-40-52.png)
+![](./images/download_abis.png)
 2. Update the FE with all the new addresses, including:
 - Addresses for all synths - e.g. `sUSD`, `sBTC`, `sETH`, `sLINK`, `sOP` etc.
 - MarginEngine and depending on the FE setup, the new TrustMulticallForwarder address if applicable.
