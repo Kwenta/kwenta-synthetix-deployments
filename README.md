@@ -2,6 +2,8 @@
 
 This the Kwenta GitOps repo for deployment of the [Synthetix](https://www.github.com/synthetixio/synthetix-v3) protocol.
 
+The following section is the Synthetix Guide to deployment, for Kwenta specific information, jump straight to [Kwenta Deployment Notes](#kwenta-deployment-notes).
+
 ## Deployment Guide
 
 - Ensure you have the latest version of [Cannon](https://usecannon.com) installed: `npm i -g @usecannon/cli`.
