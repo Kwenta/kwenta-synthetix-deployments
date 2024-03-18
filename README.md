@@ -206,3 +206,21 @@ cannon interact --chain-id 84531 --provider-url <BASE_GOERLI_RPC_URL> --private-
 - `<BASE_GOERLI_RPC_URL> ` should be an RPC url for an eth node on the Base Goerli network.
 - `<PRIVATE_KEY>` can be any private key you want to use when executing transactions against the deployment. Use the Kwenta Testnet Admin (address: 0xC2ecD777d06FFDF8B3179286BEabF52B67E9d991) private key if you want to do privileged actions.
 - `kwenta-synthetix-omnibus-test-3` is the name of our testnet deployment.
+
+## Deployment Process for Base Sepolia on Tenderly
+
+1. Copied `omnibus-base-mainnet-andromeda.toml` and renamed to `kwenta-omnibus-base-mainnet-andromeda.toml`
+2. Changed the `name` and `version`
+3. Copied `tomls/core.toml` renamed to `tomls/kwenta-core.toml`
+   1. Updated `setting.salt` and `setting.bundleSalt` from `snax` to `kwenta-snax`.
+4. Updated `setting.salt`
+5. Updated `setting.target_preset`
+6. Updated `setting.owner`, `setting.deployer` and `setting.pool_owner`
+7. Created new scripts in `package.json`: `build:kwenta-base-sepolia` and `start:kwenta-base-sepolia`
+8. Ran those to as test run
+9. Then created a new tenderly fork for base sepolia, copied its url `<TENDERLY_URL>
+10. Created a new script, building off `build:kwenta-base-sepolia`, changing `--provider-url` to `<TENDERLY_URL>`, and adding the `--private-key` argument and ran that.
+
+The reason this seems to work deploying everything, despite using `--upgrade-from` is because the salt is new. In theory I should be able to deploy this without `--upgrade-from`, by ensuring that `tomls/perps-factor` `provision.perpsFactory` depends on `depends = ["provision.system", "provision.spotFactory"]` and that `options.synthetixPackage` and `options.spotMarketPackage` line up with what is provisioned in `tomls/kwenta-core.toml` and `tomls/markets/spot-factory.toml` under `provision.system` and `provision.spotFactory`.
+
+However in practice I could not get this to work, potentially due to a cannon bug.
