@@ -1,0 +1,7 @@
+name = "kwenta-base-sepolia-quanto-spot"
+version = "0.0.1"
+description = "Deploy Quanto Perps & Custom Spot Market on Base Sepolia and Register Markets with Kwenta Deployment of Synthetix v3 Core"
+include = [
+    "tomls/kwenta-core.toml",                   # Provision the core system
+    "tomls/markets/spot-factory.toml",          # Provision the spot market factory
+]
