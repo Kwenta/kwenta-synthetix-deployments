@@ -1,0 +1,123 @@
+include = [
+    "../../oracles/eth.toml",
+    "../common/bigcap-settings.toml",
+    "../common/settlement-settings.toml",
+]
+
+[setting.weth_address]
+
+[setting.synthEthAsyncFixedFee]
+
+[setting.synthEthMaxMarketCollateral]
+
+[setting.synthEthSkewScale]
+
+[setting.synthEthWrapFee]
+
+[setting.synthEthUnwrapFee]
+
+[invoke.createEthSynth]
+target = ["spotFactory.SpotMarketProxy"]
+fromCall.func = "owner"
+func = "createSynth"
+args = ["Synthetic Ethereum", "snxETH", "<%= settings.owner %>"]
+extra.synth_eth_market_id.event = "SynthRegistered"
+extra.synth_eth_market_id.arg = 0
+extra.synth_eth_token_address.event = "SynthRegistered"
+extra.synth_eth_token_address.arg = 1
+
+[invoke.setSynthPriceEth]
+target = ["spotFactory.SpotMarketProxy"]
+fromCall.func = "getMarketOwner"
+fromCall.args = ["<%= extras.synth_eth_market_id %>"]
+func = "updatePriceData"
+args = [
+    "<%= extras.synth_eth_market_id %>",
+    "<%= extras.eth_oracle_id %>",
+    "<%= extras.eth_oracle_id %>",
+]
+
+[invoke.setSynthAtomicFixedFeeEth]
+target = ["spotFactory.SpotMarketProxy"]
+fromCall.func = "getMarketOwner"
+fromCall.args = ["<%= extras.synth_eth_market_id %>"]
+func = "setAtomicFixedFee"
+args = ["<%= extras.synth_eth_market_id %>", "<%= MaxUint256 %>"]
+
+[invoke.addSynthSettlementStrategyEth]
+target = ["spotFactory.SpotMarketProxy"]
+fromCall.func = "getMarketOwner"
+fromCall.args = ["<%= extras.synth_eth_market_id %>"]
+func = "addSettlementStrategy"
+args = [
+    "<%= extras.synth_eth_market_id %>",
+    # strategyType = 1 (pyth)
+    { strategyType = "1", settlementDelay = "<%= settings.bigCapSettlementDelay %>", settlementWindowDuration = "<%= settings.bigCapSettlementWindowDuration %>", priceVerificationContract = "<%= settings.pythPriceVerificationAddress %>", feedId = "<%= settings.pythEthFeedId %>", url = "<%= settings.pythFeedUrl %>", settlementReward = 0, minimumUsdExchangeAmount = "<%= parseEther(settings.settlementMinimumUsdExchangeAmount) %>", maxRoundingLoss = "<%= parseEther(settings.settlementMaxRoundingLoss) %>", priceDeviationTolerance = "<%= parseEther('1') %>", disabled = false },
+]
+extra.synth_eth_settlement_strategy.event = "SettlementStrategyAdded"
+extra.synth_eth_settlement_strategy.arg = 1
+
+# [invoke.setSynthSettlementStrategyEth]
+# target = ["spotFactory.SpotMarketProxy"]
+# fromCall.func = "getMarketOwner"
+# fromCall.args = ["<%= extras.synth_eth_market_id %>"]
+# func = "setSettlementStrategy"
+# args = [
+#     "<%= extras.synth_eth_market_id %>",
+#     "<%= extras.synth_eth_settlement_strategy %>",
+#     { strategyType = "1", settlementDelay = "<%= settings.bigCapSettlementDelay %>", settlementWindowDuration = "<%= settings.bigCapSettlementWindowDuration %>", priceVerificationContract = "<%= settings.pythPriceVerificationAddress %>", feedId = "<%= settings.pythEthFeedId %>", url = "<%= settings.pythFeedUrl %>", settlementReward = 0, minimumUsdExchangeAmount = "<%= parseEther(settings.settlementMinimumUsdExchangeAmount) %>", maxRoundingLoss = "<%= parseEther(settings.settlementMaxRoundingLoss) %>", priceDeviationTolerance = "<%= parseEther('1') %>", disabled = false }
+# ]
+
+# @TODO: Fee configured here??
+[invoke.setSynthAsyncFixedFeeEth]
+target = ["spotFactory.SpotMarketProxy"]
+fromCall.func = "getMarketOwner"
+fromCall.args = ["<%= extras.synth_eth_market_id %>"]
+func = "setAsyncFixedFee"
+args = [
+    "<%= extras.synth_eth_market_id %>",
+    "<%= parseEther(settings.synthEthAsyncFixedFee) %>",
+]
+
+[invoke.setSynthMaxMarketCollateralEth]
+target = ["system.CoreProxy"]
+fromCall.func = "owner"
+fromCall.args = []
+func = "configureMaximumMarketCollateral"
+args = [
+    "<%= extras.synth_eth_market_id %>",
+    "<%= settings.weth_address %>",
+    "<%= parseEther(settings.synthEthMaxMarketCollateral) %>",
+]
+
+[invoke.configureSynthWrapperEth]
+target = ["spotFactory.SpotMarketProxy"]
+fromCall.func = "getMarketOwner"
+fromCall.args = ["<%= extras.synth_eth_market_id %>"]
+func = "setWrapper"
+args = [
+    "<%= extras.synth_eth_market_id %>",
+    "<%= settings.weth_address %>",
+    "<%= parseEther(settings.synthEthMaxMarketCollateral) %>",
+]
+
+[invoke.setSynthSkewScaleEth]
+target = ["spotFactory.SpotMarketProxy"]
+fromCall.func = "getMarketOwner"
+fromCall.args = ["<%= extras.synth_eth_market_id %>"]
+func = "setMarketSkewScale"
+args = [
+    "<%= extras.synth_eth_market_id %>",
+    "<%= parseEther(settings.synthEthSkewScale) %>",
+]
+
+[invoke.setSynthWrapperFeesEth]
+target = ["spotFactory.SpotMarketProxy"]
+fromCall.func = "getMarketOwner"
+fromCall.args = ["<%= extras.synth_eth_market_id %>"]
+func = "setWrapperFees"
+args = [
+    "<%= extras.synth_eth_market_id %>",
+    "<%= parseEther(settings.synthEthWrapFee) %>",
+    "<%= parseEther(settings.synthEthUnwrapFee) %>",
+]
