@@ -195,6 +195,8 @@ Each step in the process involves specific configurations and purposes. Below ar
 
 ##### Clone
 
+> Note: The `clone` operation is equivalent to the previous `provision` operation in the current Cannon version. `provision` is still supported for backward compatibility.
+
 - **Purpose**: Provisions a new instance of a package, allowing the reuse of contracts and configurations in a new deployment.
 - **Schema**: Specifies the source package, target chain ID, presets, and variable settings to initialize the Cannonfile with specific configurations.
 
