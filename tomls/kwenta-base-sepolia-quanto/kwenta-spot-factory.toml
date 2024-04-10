@@ -1,0 +1,17 @@
+[setting.spot_market_package]
+
+[provision.spotFactory]
+source = "<%= settings.spot_market_package %>"
+targetPreset = "<%= settings.target_preset %>"
+options.coreProxyOwner = "<%= settings.owner %>"
+options.owner = "<%= settings.owner %>"
+options.salt = "<%= settings.salt %>"
+options.synthetixPackage = "<%= settings.snx_package %>@<%= settings.target_preset %>"
+options.synthetixPreset = "<%= settings.target_preset %>"
+
+# Q1: how do you know which options/var to set?
+# Q2: it is "settings._" here and "setting._" in the synthetix-v3/markets/spot-market/cannonfile.toml; why?
+# Q3: what is the point of even using the "options._" here when it is just pulling from the "setting._" in the synthetix-v3/markets/spot-market/cannonfile.toml?
+# Q4: what is the difference between a package and a preset?
+
+depends = ["provision.system"]
